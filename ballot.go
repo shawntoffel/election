@@ -75,7 +75,7 @@ func (ballots Ballots) Rollup() RolledUpBallots {
 		if contains {
 			counter[index] = counter[index] + 1
 		} else {
-			i := len(rolledUp)+1
+			i := len(rolledUp) + 1
 			rolledUp[i] = ballot
 			counter[i] = 1
 		}
@@ -93,4 +93,15 @@ func (ballots Ballots) Rollup() RolledUpBallots {
 	}
 
 	return results
+}
+
+func (ballots RolledUpBallots) Total() int {
+
+	total := 0
+
+	for _, ballot := range ballots {
+		total = total + ballot.Count
+	}
+
+	return total
 }
