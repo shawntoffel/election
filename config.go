@@ -6,4 +6,5 @@ type Config struct {
 	Candidates          Candidates
 	WithdrawnCandidates []string
 	Precision           int
+	Seed                int64
 }
