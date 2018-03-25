@@ -1,6 +1,6 @@
 package election
 
 type Result struct {
-	Candidates Candidates
-	Events     Events
+	Candidates Candidates `json:"candidates"`
+	Events     Events     `json:"events"`
 }

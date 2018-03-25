@@ -2,9 +2,9 @@ package election
 
 type Candidates []Candidate
 type Candidate struct {
-	Id   string
-	Name string
-	Rank int
+	Id   string `json:"id"`
+	Name string `json:"name"`
+	Rank int    `json:"rank"`
 }
 
 type ByRank Candidates
