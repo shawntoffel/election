@@ -3,16 +3,20 @@ package blt
 import (
 	"sort"
 	"strings"
+
+	"github.com/shawntoffel/election"
 )
 
 type BltCandidates []BltCandidate
 type BltCandidate struct {
-	Id   int
-	Name string
+	Id        int
+	Candidate election.Candidate
 }
 
+type BltCandidateMap map[string]BltCandidate
+
 func (b BltCandidate) String() string {
-	return b.Name
+	return b.Candidate.Name
 }
 
 func (b BltCandidates) String() string {
@@ -23,7 +27,7 @@ func (b BltCandidates) String() string {
 	})
 
 	for _, candidate := range b {
-		sb.WriteString(candidate.String() + "\n")
+		sb.WriteString(candidate.String() + "\r\n")
 	}
 
 	return sb.String()

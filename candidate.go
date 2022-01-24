@@ -7,8 +7,6 @@ type Candidate struct {
 	Rank int    `json:"rank"`
 }
 
-type CandidateMap map[string]int
-
 type ByRank Candidates
 
 func (c ByRank) Len() int {
@@ -21,14 +19,4 @@ func (c ByRank) Swap(i, j int) {
 
 func (c ByRank) Less(i, j int) bool {
 	return c[i].Rank < c[j].Rank
-}
-
-func (c Candidates) ToMap() CandidateMap {
-	m := CandidateMap{}
-
-	for i := 1; i <= len(c); i++ {
-		m[c[i-1].Name] = i
-	}
-
-	return m
 }

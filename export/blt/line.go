@@ -14,7 +14,7 @@ type BltBallotLine struct {
 	Content string
 }
 
-func NewBltBallotLine(rolledUpBallot election.RolledUpBallot, candidateMap election.CandidateMap) BltBallotLine {
+func NewBltBallotLine(rolledUpBallot election.RolledUpBallot, candidateMap BltCandidateMap) BltBallotLine {
 	sb := strings.Builder{}
 
 	line := BltBallotLine{
@@ -25,7 +25,7 @@ func NewBltBallotLine(rolledUpBallot election.RolledUpBallot, candidateMap elect
 	for {
 		c := candidateMap[iter.Value.(string)]
 
-		fmt.Fprintf(&sb, "%d ", c)
+		fmt.Fprintf(&sb, "%d ", c.Id)
 
 		if iter.Next() == nil {
 			break
@@ -53,10 +53,10 @@ func (b BltBallotLines) String() string {
 	})
 
 	for _, line := range b {
-		fmt.Fprintf(&sb, line.String()+"\n")
+		fmt.Fprintf(&sb, line.String()+"\r\n")
 	}
 
-	sb.WriteString("0\n")
+	sb.WriteString("0\r\n")
 
 	return sb.String()
 }

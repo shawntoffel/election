@@ -13,7 +13,7 @@ type Blt struct {
 }
 
 func (b Blt) Export(config election.Config) string {
-	candidateMap := config.Candidates.ToMap()
+	candidateMap := b.buildCandidateMap(config.Candidates)
 
 	sb := strings.Builder{}
 
@@ -26,10 +26,10 @@ func (b Blt) Export(config election.Config) string {
 }
 
 func (b Blt) buildHeaderLine(numCandidates int, numSeats int) string {
-	return fmt.Sprintf("%d %d \n", numCandidates, numSeats)
+	return fmt.Sprintf("%d %d\r\n", numCandidates, numSeats)
 }
 
-func (b Blt) buildWithdrawnCandidatesLine(withdrawnCandidates []string, candidateMap election.CandidateMap) string {
+func (b Blt) buildWithdrawnCandidatesLine(withdrawnCandidates []string, candidateMap BltCandidateMap) string {
 	if len(withdrawnCandidates) < 1 {
 		return ""
 	}
@@ -37,16 +37,19 @@ func (b Blt) buildWithdrawnCandidatesLine(withdrawnCandidates []string, candidat
 	sb := strings.Builder{}
 
 	for _, wc := range withdrawnCandidates {
-		c := candidateMap[wc]
-		fmt.Fprintf(&sb, "-%d ", c)
+		for _, c := range candidateMap {
+			if strings.EqualFold(c.Candidate.Name, wc) {
+				fmt.Fprintf(&sb, "-%d ", c.Id)
+			}
+		}
 	}
 
-	sb.WriteString("\n")
+	sb.WriteString("\r\n")
 
 	return sb.String()
 }
 
-func (b Blt) buildBallotLines(rolledUpBallots election.RolledUpBallots, candidateMap election.CandidateMap) string {
+func (b Blt) buildBallotLines(rolledUpBallots election.RolledUpBallots, candidateMap BltCandidateMap) string {
 	lines := BltBallotLines{}
 
 	for _, rolledUpBallot := range rolledUpBallots {
@@ -57,17 +60,30 @@ func (b Blt) buildBallotLines(rolledUpBallots election.RolledUpBallots, candidat
 	return lines.String()
 }
 
-func (b Blt) buildCandidateLines(candidateMap election.CandidateMap) string {
+func (b Blt) buildCandidateLines(candidateMap BltCandidateMap) string {
 	bltCandidates := BltCandidates{}
 
-	for n, v := range candidateMap {
-		bltCandidate := BltCandidate{
-			Id:   v,
-			Name: n,
-		}
-
-		bltCandidates = append(bltCandidates, bltCandidate)
+	for _, v := range candidateMap {
+		bltCandidates = append(bltCandidates, v)
 	}
 
 	return bltCandidates.String()
+}
+
+func (b Blt) buildCandidateMap(candidates election.Candidates) BltCandidateMap {
+	m := BltCandidateMap{}
+
+	for i := 1; i <= len(candidates); i++ {
+
+		candidate := candidates[i-1]
+
+		bltCandidate := BltCandidate{
+			Id:        i,
+			Candidate: candidate,
+		}
+
+		m[candidate.Id] = bltCandidate
+	}
+
+	return m
 }

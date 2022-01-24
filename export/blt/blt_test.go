@@ -1,6 +1,7 @@
 package blt
 
 import (
+	"io/ioutil"
 	"testing"
 
 	"github.com/shawntoffel/election"
@@ -11,30 +12,19 @@ func TestBltExport(t *testing.T) {
 
 	exporter := Blt{}
 
-	actual := exporter.Export(c)
-
-	t.Log("actual: \n" + actual)
-
-	expected := `6 3 
--6 
-28 1 2 3 0
-26 2 1 3 0
-3 3 0
-2 4 0
-1 5 0
-0
-Alice
-Bob
-Chris
-Don
-Eric
-Frank
-`
+	expected := loadFileData("simple.blt")
 	t.Log("expected: \n" + expected)
 
+	actual := exporter.Export(c)
+	t.Log("actual: \n" + actual)
 	if actual != expected {
 		t.Error("BLT did not match expected result")
 	}
+}
+
+func loadFileData(filename string) string {
+	bytes, _ := ioutil.ReadFile("../../testdata/" + filename)
+	return string(bytes)
 }
 
 func generateTestConfig() election.Config {
@@ -44,6 +34,7 @@ func generateTestConfig() election.Config {
 
 	for _, name := range names {
 		c := election.Candidate{}
+		c.Id = name
 		c.Name = name
 
 		config.Candidates = append(config.Candidates, c)
