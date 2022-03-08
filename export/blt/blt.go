@@ -21,7 +21,7 @@ func (b Blt) Export(config election.Config) string {
 	sb.WriteString(b.buildWithdrawnCandidatesLine(config.WithdrawnCandidates, candidateMap))
 	sb.WriteString(b.buildBallotLines(config.Ballots.Rollup(), candidateMap))
 	sb.WriteString(b.buildCandidateLines(candidateMap))
-	sb.WriteString("\"" + config.Title + "\"")
+	sb.WriteString(b.buildTitle(config.Title))
 
 	return sb.String()
 }
@@ -69,6 +69,15 @@ func (b Blt) buildCandidateLines(candidateMap BltCandidateMap) string {
 	}
 
 	return bltCandidates.String()
+}
+
+func (b Blt) buildTitle(title string) string {
+	text := title
+	if title == "" {
+		text = "Election"
+	}
+
+	return "\"" + text + "\""
 }
 
 func (b Blt) buildCandidateMap(candidates election.Candidates) BltCandidateMap {
