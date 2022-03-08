@@ -17,7 +17,7 @@ type BltCandidate struct {
 type BltCandidateMap map[string]BltCandidate
 
 func (b BltCandidate) String() string {
-	return fmt.Sprintf("%d. %s", b.Id, b.Candidate.Name)
+	return fmt.Sprintf("\"%d. %s\"", b.Id, b.Candidate.Name)
 }
 
 func (b BltCandidates) String() string {

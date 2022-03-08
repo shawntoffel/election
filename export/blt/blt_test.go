@@ -28,7 +28,9 @@ func loadFileData(filename string) string {
 }
 
 func generateTestConfig() election.Config {
-	config := election.Config{}
+	config := election.Config{
+		Title: "Test",
+	}
 
 	names := []string{"Alice", "Bob", "Chris", "Don", "Eric", "Frank"}
 
