@@ -6,12 +6,14 @@ type Counter interface {
 }
 
 type CounterState struct {
-	Events Events
-	Error  error
+	Summary *Summary
+	Error   error
 }
 
-func (s *CounterState) AddEvent(event ProcessableEvent) {
-	e := event.Process()
+func (s *CounterState) AddEvent(e ProcessableEvent) {
+	if s.Summary == nil {
+		s.Summary = &Summary{}
+	}
 
-	s.Events = append(s.Events, e)
+	s.Summary.AddEvent(NewEvent(e))
 }
