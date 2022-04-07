@@ -20,6 +20,7 @@ type RoundSummary struct {
 	Surplus    int64              `json:"surplus" yaml:"surplus"`
 	Quota      int64              `json:"quota" yaml:"quota"`
 	Candidates []CandidateSummary `json:"candidates" yaml:"candidates"`
+	Events     Events             `json:"events,omitempty" yaml:"events,omitempty"`
 }
 
 type CandidateSummary struct {

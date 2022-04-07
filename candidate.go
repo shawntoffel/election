@@ -1,6 +1,19 @@
 package election
 
 type Candidates []Candidate
+
+func (c Candidates) Equals(compare Candidates) bool {
+	if len(c) != len(compare) {
+		return false
+	}
+	for i := range c {
+		if c[i] != compare[i] {
+			return false
+		}
+	}
+	return true
+}
+
 type Candidate struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
